@@ -1,0 +1,50 @@
+league_oauth2_server:
+    authorization_server:
+
+        private_key: '%env(resolve:OAUTH_PRIVATE_KEY)%'
+        private_key_passphrase: '%env(resolve:OAUTH_PASSPHRASE)%'
+        encryption_key: '%env(resolve:OAUTH_ENCRYPTION_KEY)%'
+
+        # The type of value of "encryption_key".
+        encryption_key_type: plain # One of "plain"; "defuse"
+
+        # How long the issued access token should be valid for, used as a default if there is no grant type specific value set.
+        # The value should be a valid interval: http://php.net/manual/en/dateinterval.construct.php#refsect1-dateinterval.construct-parameters
+        access_token_ttl: PT1H
+
+        # How long the issued refresh token should be valid for, used as a default if there is no grant type specific value set.
+        # The value should be a valid interval: http://php.net/manual/en/dateinterval.construct.php#refsect1-dateinterval.construct-parameters
+        refresh_token_ttl: P1M
+
+        # Whether to require code challenge for public clients for the authorization code grant.
+        require_code_challenge_for_public_clients: ~ # Deprecated ("trikoder_oauth2.authorization_server.require_code_challenge_for_public_clients" is deprecated, use "trikoder_oauth2.authorization_server.grant_types.authorization_code.require_code_challenge_for_public_clients" instead.)
+
+        # Whether to enable the authorization code grant.
+        enable_auth_code_grant: true # Deprecated ("trikoder_oauth2.authorization_server.enable_auth_code_grant" is deprecated, use "trikoder_oauth2.authorization_server.grant_types.authorization_code.enable" instead.)
+
+        # Whether to enable the client credentials grant.
+        enable_client_credentials_grant: true # Deprecated ("trikoder_oauth2.authorization_server.enable_client_credentials_grant" is deprecated, use "trikoder_oauth2.authorization_server.grant_types.client_credentials.enable" instead.)
+
+        # Whether to enable the implicit grant.
+        enable_implicit_grant: true # Deprecated ("trikoder_oauth2.authorization_server.enable_implicit_grant" is deprecated, use "trikoder_oauth2.authorization_server.grant_types.implicit.enable" instead.)
+
+        # Whether to enable the password grant.
+        enable_password_grant: true # Deprecated ("trikoder_oauth2.authorization_server.enable_password_grant" is deprecated, use "trikoder_oauth2.authorization_server.grant_types.password.enable" instead.)
+
+        # Whether to enable the refresh token grant.
+        enable_refresh_token_grant: true # Deprecated ("trikoder_oauth2.authorization_server.enable_refresh_token_grant" is deprecated, use "trikoder_oauth2.authorization_server.grant_types.refresh_token.enable" instead.)
+
+    resource_server:
+        public_key: '%env(resolve:OAUTH_PUBLIC_KEY)%'
+    scopes:
+        available: ['id', 'email']
+        default: ['email']
+    persistence:
+        doctrine:
+            # Name of the entity manager that you wish to use for managing clients and tokens.
+            entity_manager:       default
+
+when@test:
+    league_oauth2_server:
+        persistence:
+            in_memory: null
